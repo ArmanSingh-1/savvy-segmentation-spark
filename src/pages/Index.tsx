@@ -1,16 +1,19 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, TrendingUp, Brain, Target, AlertTriangle, Zap } from 'lucide-react';
+import { Users, TrendingUp, Brain, Target, AlertTriangle, Zap, DollarSign } from 'lucide-react';
 import CustomerSegmentChart from '@/components/CustomerSegmentChart';
 import SegmentInsights from '@/components/SegmentInsights';
 import PredictiveAnalytics from '@/components/PredictiveAnalytics';
 import RealTimeMetrics from '@/components/RealTimeMetrics';
 import SegmentDetailsModal from '@/components/SegmentDetailsModal';
+import AIPredictionsPanel from '@/components/AIPredictionsPanel';
+import CustomerJourneyMap from '@/components/CustomerJourneyMap';
+import AdvancedAnalyticsDashboard from '@/components/AdvancedAnalyticsDashboard';
+import SmartRecommendationEngine from '@/components/SmartRecommendationEngine';
 
 // Mock data for demonstration
 const mockSegments = [
@@ -106,15 +109,18 @@ const Index = () => {
               </div>
               <div>
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  AI Customer Segmentation
+                  AI Customer Segmentation Pro
                 </h1>
-                <p className="text-sm text-muted-foreground">Intelligent customer insights powered by AI</p>
+                <p className="text-sm text-muted-foreground">Next-generation intelligent customer insights powered by advanced AI</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <Badge variant="secondary" className="bg-green-100 text-green-800">
                 <Zap className="h-3 w-3 mr-1" />
-                Real-time
+                Real-time AI
+              </Badge>
+              <Badge variant="secondary" className="bg-purple-100 text-purple-800">
+                Neural Network
               </Badge>
               <Button onClick={runSegmentation} disabled={isAnalyzing} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                 {isAnalyzing ? (
@@ -150,23 +156,23 @@ const Index = () => {
 
           <Card className="bg-white/70 backdrop-blur-sm border-white/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Segments</CardTitle>
-              <Target className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{mockSegments.length}</div>
-              <p className="text-xs text-muted-foreground">AI-discovered segments</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/70 backdrop-blur-sm border-white/20">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Segmentation Accuracy</CardTitle>
+              <CardTitle className="text-sm font-medium">AI Accuracy</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{segmentationAccuracy}%</div>
               <Progress value={segmentationAccuracy} className="mt-2" />
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/70 backdrop-blur-sm border-white/20">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Predicted Revenue</CardTitle>
+              <DollarSign className="h-4 w-4 text-green-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">$2.4M</div>
+              <p className="text-xs text-muted-foreground">Next quarter forecast</p>
             </CardContent>
           </Card>
 
@@ -184,10 +190,13 @@ const Index = () => {
 
         {/* Main Content */}
         <Tabs defaultValue="segments" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white/50 backdrop-blur-sm">
-            <TabsTrigger value="segments">Customer Segments</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-7 bg-white/50 backdrop-blur-sm">
+            <TabsTrigger value="segments">Segments</TabsTrigger>
             <TabsTrigger value="insights">AI Insights</TabsTrigger>
             <TabsTrigger value="predictions">Predictions</TabsTrigger>
+            <TabsTrigger value="journey">Journey Map</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="recommendations">Smart Recs</TabsTrigger>
             <TabsTrigger value="realtime">Real-time</TabsTrigger>
           </TabsList>
 
@@ -238,7 +247,22 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="predictions">
-            <PredictiveAnalytics segments={mockSegments} />
+            <div className="space-y-6">
+              <AIPredictionsPanel />
+              <PredictiveAnalytics segments={mockSegments} />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="journey">
+            <CustomerJourneyMap />
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <AdvancedAnalyticsDashboard />
+          </TabsContent>
+
+          <TabsContent value="recommendations">
+            <SmartRecommendationEngine />
           </TabsContent>
 
           <TabsContent value="realtime">
