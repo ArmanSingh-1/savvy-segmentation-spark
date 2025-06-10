@@ -16,6 +16,8 @@ import AdvancedAnalyticsDashboard from '@/components/AdvancedAnalyticsDashboard'
 import SmartRecommendationEngine from '@/components/SmartRecommendationEngine';
 import CustomDataAnalysis from '@/components/CustomDataAnalysis';
 import IssueResolutionEngine from '@/components/IssueResolutionEngine';
+import CSVDataImporter from '@/components/CSVDataImporter';
+import EnhancedAnalyticsDashboard from '@/components/EnhancedAnalyticsDashboard';
 
 // Mock data for demonstration
 const mockSegments = [
@@ -192,14 +194,15 @@ const Index = () => {
 
         {/* Main Content */}
         <Tabs defaultValue="segments" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-8 bg-white/50 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-9 bg-white/50 backdrop-blur-sm">
             <TabsTrigger value="segments">Segments</TabsTrigger>
             <TabsTrigger value="insights">AI Insights</TabsTrigger>
             <TabsTrigger value="predictions">Predictions</TabsTrigger>
             <TabsTrigger value="journey">Journey Map</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="enhanced">Enhanced</TabsTrigger>
             <TabsTrigger value="recommendations">Smart Recs</TabsTrigger>
-            <TabsTrigger value="custom">Custom Analysis</TabsTrigger>
+            <TabsTrigger value="import">CSV Import</TabsTrigger>
             <TabsTrigger value="realtime">Real-time</TabsTrigger>
           </TabsList>
 
@@ -264,6 +267,10 @@ const Index = () => {
             <AdvancedAnalyticsDashboard />
           </TabsContent>
 
+          <TabsContent value="enhanced">
+            <EnhancedAnalyticsDashboard />
+          </TabsContent>
+
           <TabsContent value="recommendations">
             <div className="space-y-6">
               <SmartRecommendationEngine />
@@ -271,8 +278,8 @@ const Index = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="custom">
-            <CustomDataAnalysis />
+          <TabsContent value="import">
+            <CSVDataImporter />
           </TabsContent>
 
           <TabsContent value="realtime">
