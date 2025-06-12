@@ -1,150 +1,109 @@
-import { useState, useEffect } from 'react';
+
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, TrendingUp, Brain, Target, AlertTriangle, Zap, DollarSign } from 'lucide-react';
+import { Users, TrendingUp, DollarSign, AlertTriangle, Upload, BarChart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import CustomerSegmentChart from '@/components/CustomerSegmentChart';
-import SegmentInsights from '@/components/SegmentInsights';
-import PredictiveAnalytics from '@/components/PredictiveAnalytics';
-import RealTimeMetrics from '@/components/RealTimeMetrics';
-import SegmentDetailsModal from '@/components/SegmentDetailsModal';
-import AIPredictionsPanel from '@/components/AIPredictionsPanel';
-import CustomerJourneyMap from '@/components/CustomerJourneyMap';
-import AdvancedAnalyticsDashboard from '@/components/AdvancedAnalyticsDashboard';
-import SmartRecommendationEngine from '@/components/SmartRecommendationEngine';
-import CustomDataAnalysis from '@/components/CustomDataAnalysis';
-import IssueResolutionEngine from '@/components/IssueResolutionEngine';
-import CSVDataImporter from '@/components/CSVDataImporter';
-import EnhancedAnalyticsDashboard from '@/components/EnhancedAnalyticsDashboard';
+import DashboardNav from '@/components/DashboardNav';
 
 // Mock data for demonstration
 const mockSegments = [
   {
     id: 1,
-    name: "High-Value Enthusiasts",
-    description: "Premium customers with high engagement and spending",
+    name: "High-Value Customers",
+    description: "Premium customers with high engagement",
     size: 245,
     percentage: 15.2,
     avgValue: 2840,
     churnRisk: 8,
     growth: 12.5,
     color: "#8B5CF6",
-    characteristics: ["High spending", "Frequent purchases", "Premium product preference"],
-    aiInsight: "This segment shows strong loyalty and premium product affinity. Recommended for VIP programs and exclusive offers."
+    characteristics: ["High spending", "Frequent purchases"],
+    aiInsight: "Strong loyalty segment for VIP programs."
   },
   {
     id: 2,
-    name: "Price-Conscious Regulars",
-    description: "Frequent buyers who are sensitive to pricing",
+    name: "Budget Conscious",
+    description: "Price-sensitive regular buyers",
     size: 512,
     percentage: 31.8,
     avgValue: 680,
     churnRisk: 25,
     growth: 8.2,
     color: "#06B6D4",
-    characteristics: ["Price sensitive", "Discount seekers", "Regular purchase pattern"],
-    aiInsight: "This segment responds well to promotions and loyalty rewards. Focus on value-based marketing."
+    characteristics: ["Price sensitive", "Discount seekers"],
+    aiInsight: "Responds well to promotions and loyalty rewards."
   },
   {
     id: 3,
-    name: "Emerging Explorers",
-    description: "New customers with high growth potential",
+    name: "New Customers",
+    description: "Recent customers with growth potential",
     size: 189,
     percentage: 11.7,
     avgValue: 420,
     churnRisk: 45,
     growth: 34.6,
     color: "#10B981",
-    characteristics: ["New customers", "Experimental behavior", "Digital-first"],
-    aiInsight: "Fast-growing segment with high potential. Implement onboarding campaigns to reduce churn risk."
-  },
-  {
-    id: 4,
-    name: "At-Risk Churners",
-    description: "Declining engagement, high churn probability",
-    size: 98,
-    percentage: 6.1,
-    avgValue: 320,
-    churnRisk: 78,
-    growth: -15.3,
-    color: "#EF4444",
-    characteristics: ["Declining activity", "Reduced spending", "Long intervals"],
-    aiInsight: "Critical segment requiring immediate retention efforts. Deploy win-back campaigns urgently."
-  },
-  {
-    id: 5,
-    name: "Seasonal Shoppers",
-    description: "Event-driven purchasing behavior",
-    size: 567,
-    percentage: 35.2,
-    avgValue: 890,
-    churnRisk: 35,
-    growth: 5.8,
-    color: "#F59E0B",
-    characteristics: ["Seasonal patterns", "Event-driven", "Moderate value"],
-    aiInsight: "Predictable purchasing patterns. Optimize seasonal campaigns and inventory planning."
+    characteristics: ["New customers", "Experimental"],
+    aiInsight: "High potential segment requiring onboarding focus."
   }
 ];
 
 const Index = () => {
-  const [selectedSegment, setSelectedSegment] = useState(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [totalCustomers] = useState(1611);
-  const [segmentationAccuracy] = useState(94.7);
-
-  const runSegmentation = () => {
-    setIsAnalyzing(true);
-    setTimeout(() => {
-      setIsAnalyzing(false);
-    }, 3000);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
-      {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 sticky top-0 z-10">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <Brain className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  AI Customer Segmentation Pro
-                </h1>
-                <p className="text-sm text-muted-foreground">Next-generation intelligent customer insights powered by advanced AI</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <Badge variant="secondary" className="bg-green-100 text-green-800">
-                <Zap className="h-3 w-3 mr-1" />
-                Real-time AI
-              </Badge>
-              <Badge variant="secondary" className="bg-purple-100 text-purple-800">
-                Neural Network
-              </Badge>
-              <Button onClick={runSegmentation} disabled={isAnalyzing} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                {isAnalyzing ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Analyzing...
-                  </>
-                ) : (
-                  <>
-                    <Brain className="h-4 w-4 mr-2" />
-                    Re-analyze Segments
-                  </>
-                )}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <DashboardNav />
 
       <div className="container mx-auto px-6 py-8">
+        {/* Welcome Section */}
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome to Your Dashboard</h2>
+          <p className="text-gray-600">Get insights from your data with AI-powered analytics</p>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <Card className="bg-white/70 backdrop-blur-sm border-white/20">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">Upload New Data</h3>
+                  <p className="text-sm text-muted-foreground mb-4">Import CSV files to analyze your customer data</p>
+                  <Link to="/upload">
+                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600">
+                      <Upload className="h-4 w-4 mr-2" />
+                      Upload CSV
+                    </Button>
+                  </Link>
+                </div>
+                <Upload className="h-12 w-12 text-blue-600" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/70 backdrop-blur-sm border-white/20">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">View Analytics</h3>
+                  <p className="text-sm text-muted-foreground mb-4">Explore detailed customer segments and insights</p>
+                  <Link to="/analytics">
+                    <Button variant="outline">
+                      <BarChart className="h-4 w-4 mr-2" />
+                      View Analytics
+                    </Button>
+                  </Link>
+                </div>
+                <BarChart className="h-12 w-12 text-green-600" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="bg-white/70 backdrop-blur-sm border-white/20">
@@ -160,141 +119,75 @@ const Index = () => {
 
           <Card className="bg-white/70 backdrop-blur-sm border-white/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">AI Accuracy</CardTitle>
+              <CardTitle className="text-sm font-medium">Active Segments</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{segmentationAccuracy}%</div>
-              <Progress value={segmentationAccuracy} className="mt-2" />
+              <div className="text-2xl font-bold">{mockSegments.length}</div>
+              <p className="text-xs text-muted-foreground">Customer segments identified</p>
             </CardContent>
           </Card>
 
           <Card className="bg-white/70 backdrop-blur-sm border-white/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Predicted Revenue</CardTitle>
+              <CardTitle className="text-sm font-medium">Avg Customer Value</CardTitle>
               <DollarSign className="h-4 w-4 text-green-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">$2.4M</div>
-              <p className="text-xs text-muted-foreground">Next quarter forecast</p>
+              <div className="text-2xl font-bold text-green-600">$1,247</div>
+              <p className="text-xs text-muted-foreground">Across all segments</p>
             </CardContent>
           </Card>
 
           <Card className="bg-white/70 backdrop-blur-sm border-white/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">High Churn Risk</CardTitle>
+              <CardTitle className="text-sm font-medium">High Risk</CardTitle>
               <AlertTriangle className="h-4 w-4 text-orange-500" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-orange-600">98</div>
-              <p className="text-xs text-muted-foreground">Customers need attention</p>
+              <p className="text-xs text-muted-foreground">Customers at risk</p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Main Content */}
-        <Tabs defaultValue="segments" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-9 bg-white/50 backdrop-blur-sm">
-            <TabsTrigger value="segments">Segments</TabsTrigger>
-            <TabsTrigger value="insights">AI Insights</TabsTrigger>
-            <TabsTrigger value="predictions">Predictions</TabsTrigger>
-            <TabsTrigger value="journey">Journey Map</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="enhanced">Enhanced</TabsTrigger>
-            <TabsTrigger value="recommendations">Smart Recs</TabsTrigger>
-            <TabsTrigger value="import">CSV Import</TabsTrigger>
-            <TabsTrigger value="realtime">Real-time</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="segments" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <CustomerSegmentChart segments={mockSegments} />
-              
-              <div className="space-y-4">
-                <Card className="bg-white/70 backdrop-blur-sm border-white/20">
-                  <CardHeader>
-                    <CardTitle>Segment Overview</CardTitle>
-                    <CardDescription>Click on any segment for detailed analysis</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {mockSegments.map((segment) => (
-                      <div
-                        key={segment.id}
-                        className="p-4 rounded-lg border border-white/20 bg-white/30 hover:bg-white/50 cursor-pointer transition-all duration-200"
-                        onClick={() => setSelectedSegment(segment)}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-3">
-                            <div
-                              className="w-4 h-4 rounded-full"
-                              style={{ backgroundColor: segment.color }}
-                            />
-                            <h3 className="font-semibold">{segment.name}</h3>
-                          </div>
-                          <Badge variant={segment.churnRisk > 50 ? "destructive" : segment.churnRisk > 30 ? "secondary" : "default"}>
-                            {segment.churnRisk}% risk
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-2">{segment.description}</p>
-                        <div className="flex justify-between text-sm">
-                          <span>{segment.size} customers ({segment.percentage}%)</span>
-                          <span className="font-medium">${segment.avgValue} avg value</span>
-                        </div>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
+        {/* Main Dashboard Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <CustomerSegmentChart segments={mockSegments} />
+          
+          <Card className="bg-white/70 backdrop-blur-sm border-white/20">
+            <CardHeader>
+              <CardTitle>Recent Activity</CardTitle>
+              <CardDescription>Latest data processing and insights</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between p-3 bg-white/30 rounded-lg">
+                <div>
+                  <p className="font-medium">Customer segmentation completed</p>
+                  <p className="text-sm text-muted-foreground">2 hours ago</p>
+                </div>
+                <Badge variant="default">Success</Badge>
               </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="insights">
-            <SegmentInsights segments={mockSegments} />
-          </TabsContent>
-
-          <TabsContent value="predictions">
-            <div className="space-y-6">
-              <AIPredictionsPanel />
-              <PredictiveAnalytics segments={mockSegments} />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="journey">
-            <CustomerJourneyMap />
-          </TabsContent>
-
-          <TabsContent value="analytics">
-            <AdvancedAnalyticsDashboard />
-          </TabsContent>
-
-          <TabsContent value="enhanced">
-            <EnhancedAnalyticsDashboard />
-          </TabsContent>
-
-          <TabsContent value="recommendations">
-            <div className="space-y-6">
-              <SmartRecommendationEngine />
-              <IssueResolutionEngine />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="import">
-            <CSVDataImporter />
-          </TabsContent>
-
-          <TabsContent value="realtime">
-            <RealTimeMetrics />
-          </TabsContent>
-        </Tabs>
+              
+              <div className="flex items-center justify-between p-3 bg-white/30 rounded-lg">
+                <div>
+                  <p className="font-medium">New CSV file uploaded</p>
+                  <p className="text-sm text-muted-foreground">5 hours ago</p>
+                </div>
+                <Badge variant="secondary">Processing</Badge>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 bg-white/30 rounded-lg">
+                <div>
+                  <p className="font-medium">AI insights generated</p>
+                  <p className="text-sm text-muted-foreground">1 day ago</p>
+                </div>
+                <Badge variant="default">Complete</Badge>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-
-      {selectedSegment && (
-        <SegmentDetailsModal
-          segment={selectedSegment}
-          isOpen={!!selectedSegment}
-          onClose={() => setSelectedSegment(null)}
-        />
-      )}
     </div>
   );
 };
