@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { BarChart, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -13,18 +15,35 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // TODO: Implement actual authentication with backend
-    setTimeout(() => {
-      setIsLoading(false);
-      // For now, simulate successful login
-      localStorage.setItem('isAuthenticated', 'true');
+    try {
+      // TODO: BACKEND INTEGRATION POINT
+      // Replace this with actual backend authentication
+      console.log('🔧 BACKEND TODO: Replace mock login with real API call');
+      await login(email, password);
+      
+      toast({
+        title: "Success",
+        description: "Successfully signed in!",
+      });
+      
       navigate('/');
-    }, 1000);
+    } catch (error) {
+      console.error('Login error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to sign in. Please check your credentials.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

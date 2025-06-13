@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { BarChart, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +21,8 @@ const SignUp = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { signup } = useAuth();
+  const { toast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -31,19 +35,43 @@ const SignUp = () => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match');
+      toast({
+        title: "Error",
+        description: "Passwords do not match",
+        variant: "destructive",
+      });
       return;
     }
     
     setIsLoading(true);
     
-    // TODO: Implement actual registration with backend
-    setTimeout(() => {
-      setIsLoading(false);
-      // For now, simulate successful registration
-      localStorage.setItem('isAuthenticated', 'true');
+    try {
+      // TODO: BACKEND INTEGRATION POINT
+      // Replace this with actual backend user registration
+      console.log('🔧 BACKEND TODO: Replace mock signup with real API call');
+      await signup({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password
+      });
+      
+      toast({
+        title: "Success",
+        description: "Account created successfully!",
+      });
+      
       navigate('/');
-    }, 1000);
+    } catch (error) {
+      console.error('Signup error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create account. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
