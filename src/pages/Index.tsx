@@ -7,6 +7,7 @@ import { Users, TrendingUp, DollarSign, AlertTriangle, Upload, BarChart } from '
 import { Link } from 'react-router-dom';
 import CustomerSegmentChart from '@/components/CustomerSegmentChart';
 import DashboardNav from '@/components/DashboardNav';
+import { useAuth } from '@/hooks/useAuth';
 
 // Mock data for demonstration
 const mockSegments = [
@@ -53,6 +54,7 @@ const mockSegments = [
 
 const Index = () => {
   const [totalCustomers] = useState(1611);
+  const { user } = useAuth();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
@@ -61,7 +63,9 @@ const Index = () => {
       <div className="container mx-auto px-6 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome to Your Dashboard</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome back, {user?.firstName}!
+          </h2>
           <p className="text-gray-600">Get insights from your data with AI-powered analytics</p>
         </div>
 

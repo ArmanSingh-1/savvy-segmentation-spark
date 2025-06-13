@@ -1,15 +1,32 @@
 
-import { NavLink } from 'react-router-dom';
-import { Home, Upload, BarChart, Database } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Home, Upload, BarChart, Database, LogOut, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/useAuth';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const DashboardNav = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
   const navItems = [
     { to: '/', icon: Home, label: 'Dashboard' },
     { to: '/upload', icon: Upload, label: 'Upload CSV' },
     { to: '/analytics', icon: BarChart, label: 'Analytics' },
     { to: '/data', icon: Database, label: 'Data Management' }
   ];
+
+  const handleLogout = () => {
+    logout();
+    navigate('/signin');
+  };
 
   return (
     <nav className="bg-white/80 backdrop-blur-sm border-b border-white/20 sticky top-0 z-10">
@@ -27,21 +44,45 @@ const DashboardNav = () => {
             </div>
           </div>
           
-          <div className="flex items-center gap-2">
-            {navItems.map((item) => (
-              <NavLink key={item.to} to={item.to}>
-                {({ isActive }) => (
-                  <Button 
-                    variant={isActive ? "default" : "ghost"} 
-                    size="sm"
-                    className={isActive ? "bg-gradient-to-r from-blue-600 to-purple-600" : ""}
-                  >
-                    <item.icon className="h-4 w-4 mr-2" />
-                    {item.label}
-                  </Button>
-                )}
-              </NavLink>
-            ))}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              {navItems.map((item) => (
+                <NavLink key={item.to} to={item.to}>
+                  {({ isActive }) => (
+                    <Button 
+                      variant={isActive ? "default" : "ghost"} 
+                      size="sm"
+                      className={isActive ? "bg-gradient-to-r from-blue-600 to-purple-600" : ""}
+                    >
+                      <item.icon className="h-4 w-4 mr-2" />
+                      {item.label}
+                    </Button>
+                  )}
+                </NavLink>
+              ))}
+            </div>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  <span className="hidden md:inline">{user?.firstName}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>
+                  {user?.firstName} {user?.lastName}
+                </DropdownMenuLabel>
+                <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
+                  {user?.email}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
