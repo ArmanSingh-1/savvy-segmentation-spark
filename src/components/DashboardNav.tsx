@@ -1,6 +1,6 @@
 
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Upload, BarChart, Database, LogOut, User } from 'lucide-react';
+import { Home, Upload, LogOut, User, BarChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import {
@@ -18,9 +18,7 @@ const DashboardNav = () => {
 
   const navItems = [
     { to: '/', icon: Home, label: 'Dashboard' },
-    { to: '/upload', icon: Upload, label: 'Upload CSV' },
-    { to: '/analytics', icon: BarChart, label: 'Analytics' },
-    { to: '/data', icon: Database, label: 'Data Management' }
+    { to: '/upload', icon: Upload, label: 'Upload Data' }
   ];
 
   const handleLogout = () => {
@@ -38,9 +36,9 @@ const DashboardNav = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Data Analytics Dashboard
+                Analytics Dashboard
               </h1>
-              <p className="text-sm text-muted-foreground">Analyze your data with AI-powered insights</p>
+              <p className="text-sm text-muted-foreground">Simple data analysis</p>
             </div>
           </div>
           
